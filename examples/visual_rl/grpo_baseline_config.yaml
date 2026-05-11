@@ -1,23 +1,20 @@
-# =============================================================================
 # Baseline GRPO Training Configuration
-# 标准 GRPO 训练配置，与 Author-Reviewer 方法对齐以进行公平对比
-# =============================================================================
+# Replace the data paths with the files downloaded from the released dataset,
+# or override them from the training script via TRAIN_DATA and VAL_DATA.
 #
-# 数据格式要求：
+# Expected data format:
 # {
-#     "problem": "问题内容...",
-#     "answer": "正确答案",
+#     "problem": "question text...",
+#     "answer": "ground-truth answer",
 #     "problem_type": "math",
 #     "data_type": "image" | "video" | "text",
-#     "images": ["path/to/image.jpg"] 或 [],
-#     "videos": ["path/to/video.mp4"] 或 []
+#     "images": ["path/to/image.jpg"] or [],
+#     "videos": ["path/to/video.mp4"] or []
 # }
-#
-# =============================================================================
 
 data:
-  train_files: /pfs/siqingyi/vl_rl_data/final_data/MMFineReason_data_with_conclusion.json
-  val_files: /pfs/qcy/RL_DATA/val_data/visual/vl_math_val_mini_data.json
+  train_files: data/train.jsonl
+  val_files: data/val.jsonl
 
   prompt_key: problem
   answer_key: answer
@@ -38,8 +35,6 @@ data:
   max_response_length: 4096
   filter_overlong_prompts: false
 
-  # 与 Author-Reviewer 对齐：256 global batch size / 8 rollout.n = 32 rollout_batch_size
-  # 但为了公平对比，我们使用相同的 rollout_batch_size
   rollout_batch_size: 256
   mini_rollout_batch_size: null
   val_batch_size: 256
@@ -60,12 +55,8 @@ algorithm:
   filter_key: overall
   filter_low: 0.01
   filter_high: 0.99
-
-
-
 worker:
   actor:
-    # 与 Author-Reviewer 对齐的 batch size
     global_batch_size: 256
     micro_batch_size_per_device_for_update: 1
     micro_batch_size_per_device_for_experience: 1
@@ -100,7 +91,6 @@ worker:
       offload_optimizer: true
 
   rollout:
-    # 与 Author-Reviewer 对齐的采样参数
     n: 8
     temperature: 1.0
     top_p: 1.0
@@ -136,8 +126,8 @@ trainer:
   total_epochs: 10
   max_steps: null
 
-  project_name: grpo_baseline_rl
-  experiment_name: grpo_baseline_qwen3vl8b_MMFineReason
+  project_name: rlsd
+  experiment_name: grpo_baseline_qwen3vl8b
 
   logger: ["file", "wandb"]
 

@@ -1,11 +1,10 @@
-# =============================================================================
-# 最简 GRPO + RLSD 配置
-# Simple GRPO + RLSD
-# =============================================================================
+# Simple GRPO + RLSD configuration.
+# Replace the data paths with the files downloaded from the released dataset,
+# or override them from the training script via TRAIN_DATA and VAL_DATA.
 
 data:
-  train_files: /pfs/siqingyi/vl_rl_data/final_data/MMFineReason_data_with_conclusion.json
-  val_files: /pfs/siqingyi/vl_rl_data/val_data/val_data.json
+  train_files: data/train.jsonl
+  val_files: data/val.jsonl
 
   prompt_key: problem
   answer_key: answer
@@ -121,7 +120,7 @@ trainer:
   max_steps: null
 
   project_name: rlsd
-  experiment_name: grpo_rlsd_simple
+  experiment_name: rlsd_qwen3vl8b
 
   logger: ["file", "wandb"]
 

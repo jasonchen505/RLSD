@@ -1,17 +1,13 @@
 #!/bin/bash
-# =============================================================================
-# 最简 GRPO + RLSD 训练脚本
-# Simple GRPO + RLSD (no Navigator)
-# =============================================================================
+# Simple GRPO + RLSD training script.
 set -euo pipefail
 set -x
 
-export PATH="/pfs/siqingyi/miniconda3/bin:$PATH"
-source activate rlsd
+if [ -z "${CONDA_DEFAULT_ENV:-}" ]; then
+    echo "[INFO] No active conda environment detected. Activate your environment first, for example: conda activate rlsd"
+fi
 
-id sandbox_runner &>/dev/null || useradd -M -s /bin/false sandbox_runner 2>/dev/null || echo "[WARN] Could not create sandbox_runner user"
-
-export WANDB_API_KEY=e72fce795d7e86b88f22eb1218731ec7e748feab
+export WANDB_API_KEY="${WANDB_API_KEY:-<your_wandb_api_key>}"
 export TOKENIZERS_PARALLELISM=false
 export RAY_worker_num_grpc_internal_threads=1
 export RAY_ADDRESS=""
@@ -31,18 +27,19 @@ export MASTER_PORT=${MASTER_PORT:-6379}
 NPROC_PER_NODE=${NPROC_PER_NODE:-8}
 RAY_DASHBOARD_PORT=${RAY_DASHBOARD_PORT:-8265}
 
-PROJECT_DIR=/pfs/qcy/video_rl/rlsd_verl
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 CONFIG_PATH=${CONFIG_PATH:-"${PROJECT_DIR}/examples/visual_rl/rlsd_config.yaml"}
 
-MODEL_PATH=${MODEL_PATH:-"/pfs/qcy/models/Qwen3-VL-8B-Instruct"}
-TRAIN_DATA=${TRAIN_DATA:-"/pfs/siqingyi/vl_rl_data/final_data/MMFineReason_data_with_conclusion.json"}
-VAL_DATA=${VAL_DATA:-"/pfs/qcy/RL_DATA/val_data/visual/vl_math_val_mini_data.json"}
+MODEL_PATH=${MODEL_PATH:-"Qwen/Qwen3-VL-8B-Instruct"}
+TRAIN_DATA=${TRAIN_DATA:-"${PROJECT_DIR}/data/train.jsonl"}
+VAL_DATA=${VAL_DATA:-"${PROJECT_DIR}/data/val.jsonl"}
 FORMAT_PROMPT="$PROJECT_DIR/examples/visual_rl/format_prompt/unified.jinja"
 TEACHER_TEMPLATE="$PROJECT_DIR/examples/visual_rl/format_prompt/teacher_hint_self_distill.jinja"
 REWARD_FUNCTION="$PROJECT_DIR/examples/visual_rl/reward_function/unified.py:compute_score"
 
 OUTPUT_PATH=${OUTPUT_PATH:-"${PROJECT_DIR}/checkpoints/grpo_rlsd_simple"}
-EXPERIMENT_NAME=${EXPERIMENT_NAME:-"grpo_rlsd_simple_runz_20_60"}
+EXPERIMENT_NAME=${EXPERIMENT_NAME:-"rlsd_qwen3vl8b"}
 ROLLOUT_BATCH_SIZE=${ROLLOUT_BATCH_SIZE:-256}
 ROLLOUT_N=${ROLLOUT_N:-8}
 RLSD_LAMBDA=${RLSD_LAMBDA:-0.5}
@@ -56,16 +53,17 @@ LOG_FILE="${LOG_DIR}/grpo_rlsd_rank${RANK}_${TIMESTAMP}.log"
 echo "============================================================"
 echo "  Simple GRPO + RLSD"
 echo "============================================================"
-echo "  节点总数: ${WORLD_SIZE}, 当前节点: ${RANK}"
-echo "  主节点: ${MASTER_ADDR}:${MASTER_PORT}"
-echo "  每节点 GPU: ${NPROC_PER_NODE}, 总 GPU: $((WORLD_SIZE * NPROC_PER_NODE))"
+echo "  Nodes: ${WORLD_SIZE}, Rank: ${RANK}"
+echo "  Head node: ${MASTER_ADDR}:${MASTER_PORT}"
+echo "  GPUs per node: ${NPROC_PER_NODE}, Total GPUs: $((WORLD_SIZE * NPROC_PER_NODE))"
 echo "------------------------------------------------------------"
-echo "  配置文件: ${CONFIG_PATH}"
-echo "  模型路径: ${MODEL_PATH}"
-echo "  训练数据: ${TRAIN_DATA}"
-echo "  验证数据: ${VAL_DATA}"
-echo "  输出路径: ${OUTPUT_PATH}"
-echo "  实验名称: ${EXPERIMENT_NAME}"
+echo "  Project dir: ${PROJECT_DIR}"
+echo "  Config: ${CONFIG_PATH}"
+echo "  Model: ${MODEL_PATH}"
+echo "  Train data: ${TRAIN_DATA}"
+echo "  Val data: ${VAL_DATA}"
+echo "  Output path: ${OUTPUT_PATH}"
+echo "  Experiment: ${EXPERIMENT_NAME}"
 echo "  rollout.n: ${ROLLOUT_N}"
 echo "  rollout_batch_size: ${ROLLOUT_BATCH_SIZE}"
 echo "  rlsd_lambda: ${RLSD_LAMBDA}"
@@ -88,10 +86,10 @@ wait_for_head() {
             return 0
         fi
         attempt=$((attempt + 1))
-        echo "  等待 Head 节点... ($attempt/$max_attempts)"
+        echo "  Waiting for head node... ($attempt/$max_attempts)"
         sleep 5
     done
-    echo "[ERROR] 等待 Head 节点超时"
+    echo "[ERROR] Timed out waiting for head node"
     return 1
 }
 
@@ -103,16 +101,16 @@ wait_for_workers() {
     while [ $attempt -lt $max_attempts ]; do
         local connected_nodes
         connected_nodes=$(ray status 2>/dev/null | grep -c "node_" || echo "0")
-        echo "  已连接节点: $connected_nodes / $expected_nodes (尝试 $attempt/$max_attempts)"
+        echo "  Connected nodes: $connected_nodes / $expected_nodes (attempt $attempt/$max_attempts)"
         if [ "$connected_nodes" -ge "$expected_nodes" ]; then
-            echo "[INFO] 所有节点已连接!"
+            echo "[INFO] All nodes are connected!"
             ray status
             return 0
         fi
         attempt=$((attempt + 1))
         sleep 10
     done
-    echo "[ERROR] 未能等到所有节点连接"
+    echo "[ERROR] Timed out waiting for all nodes"
     ray status
     return 1
 }
@@ -136,7 +134,7 @@ if [ "$RANK" == "0" ]; then
     if [ "$WORLD_SIZE" -gt 1 ]; then
         echo "[HEAD] Waiting for Worker nodes to connect..."
         if ! wait_for_workers; then
-            echo "[ERROR] 集群未就绪，退出"
+            echo "[ERROR] Ray cluster is not ready"
             cleanup_ray
             exit 1
         fi
@@ -184,7 +182,7 @@ else
 
     echo "[WORKER ${RANK}] Waiting for Head node..."
     if ! wait_for_head; then
-        echo "[ERROR] 无法连接到 Head 节点，退出"
+        echo "[ERROR] Failed to connect to head node"
         exit 1
     fi
 
