@@ -1,0 +1,37 @@
+\section{Architecture}
+\label{sec:method}
+Building effective generalist agents requires more than scaling language models: it demands a careful integration of planning strategies, memory mechanisms, and tool infrastructures into a coherent system. Prior work has shown that isolated improvements in any one component—such as adding new tools, refining prompts, or adjusting planning heuristics—often lead to limited or unstable gains. Our approach instead emphasizes system-level design, where diverse agent paradigms, structured memory hierarchies, and statistically validated tool sets are woven into a unified framework. This section details our methodology, beginning with agent architectures, followed by memory design, and concluding with tool integration.
+
+\subsection{Agents}
+We design our framework around a heterogeneous ensemble of agents that reflects two complementary paradigms of agentic reasoning. The first follows the \texttt{Plan–Execute} principle, where a high-level plan is generated in advance, executed step by step, and periodically revised through lightweight reflection. This structure provides a low-variance pipeline, ensuring that tasks with deterministic decomposition can be executed reliably. The second follows the \texttt{ReAct} paradigm, in which reasoning and action are tightly interleaved, allowing the agent to replan dynamically at every step. Although this style exhibits higher variance, it excels in exploratory tasks that require adaptive reasoning under uncertainty.
+
+To reconcile these statistical trade-offs, we implement a hierarchical multi-agent ensemble. A Supervisor Agent built upon the \texttt{Plan–Execute} framework ensures global coherence of the solution trajectory, while multiple Single Agents based on \texttt{ReAct} provide step-level adaptability. At inference, their outputs are aggregated through posterior voting, which can be configured with 3 or 5 models depending on resource availability. For instance, a three-way ensemble may combine two \texttt{ReAct} agents with a \texttt{Plan–Execute} agent. Empirically, this mixture consistently improves pass rates across GAIA tasks, highlighting the benefit of balancing bias and variance through ensemble decision-making.
+
+Inter-agent interaction is governed by a structured communication protocol. Each agent produces not only a candidate solution but also a message object that records reasoning chains, tool invocations, and intermediate evidence. These messages are transmitted through a central communication hub, stored in the working memory buffer, and made accessible to other agents for cross-validation. By constraining communication to structured formats rather than free-form dialogue, we ensure consistency and prevent uncontrolled conversational drift. This architecture resembles a cooperative yet disciplined debate, where agents can critique or support one another proposals, leading to more reliable outcomes.
+
+\subsection{Memory}
+
+Memory is a central component that underpins both long-term continuity and short-term adaptability of our framework. We design a hierarchical memory system consisting of three layers.
+
+\begin{itemize}
+    \item \textbf{Working Memory}
+    stores the live execution context, including current plans, intermediate tool outputs, and exchanged messages between agents.
+    \item \textbf{Semantic Memory}
+    records the trajectory of completed tasks, including successes, failures, and decision rationales, compresses episodic traces into distilled knowledge units via summarization and embedding, ensuring that relevant lessons can be retrieved even when raw histories are prohibitively long.
+    \item \textbf{Procedural Memory}
+     is embedded in the form of finely tuned system prompts. These prompts encode guidelines such as how to prioritize information sources, when to replan, or how to handle conflicting evidence. Unlike static instruction prompts, our procedural memory is dynamically adjusted based on accumulated experience.
+\end{itemize}
+
+During inference, retrieval from long-term memory is mediated by semantic similarity search, ensuring that agents can access precedent cases that align with the current task. Retrieved items are then injected into working memory as auxiliary context. In addition, procedural memory functions as a meta-controller, shaping how agents interpret retrieved traces and adapt their planning strategies. This combination enables unbounded historical continuity, where the agent retains identity and knowledge across arbitrarily extended interactions without overwhelming the underlying LLM backbone.
+
+
+\subsection{Tools}
+Tool design and integration form the backbone of the agent’s factual acquisition capacity. Rather than maximizing the number of available tools, we identify and refine the classes of tools that statistically contribute most to task success. Our final tool suite centers around three categories: search, code execution, and local multimodal parsing.
+
+The search subsystem employs a multi-source aggregator that queries \texttt{Google}, \texttt{Bing} and \texttt{DuckDuckGo}, supplemented with domain-specific interfaces such as \texttt{Wikipedia} search, \texttt{Arxiv} advanced retrieval, and multiple \texttt{GitHub} search APIs. To avoid brittle dependence on a single provider, queries are reformulated via a reflection–expansion loop, where the agent first analyzes ambiguities, then generates alternative formulations with morphological and semantic variants. Retrieved documents are parsed using a minimalist browsing tool set restricted to Search, Visit, and Read, which reduces error propagation from overly complex navigation.
+
+The code execution environment is implemented as a secure \texttt{Python} sandbox. Tool calls follow a uniform API: the agent generates structured code snippets, which are executed in isolation, and the execution traces are automatically stored in working memory. This allows downstream agents to reason not only over outputs but also over execution logs, supporting trace-based debugging and iterative refinement.
+
+For multimodal parsing, we introduce 17 specialized interpreters capable of handling PDFs, spreadsheets, presentations, audio, video, and image files. Each interpreter exposes a lightweight interface (e.g., \texttt{parse\_pdf}, \texttt{extract\_audio\_transcript}, \texttt{analyze\_image}) that returns structured outputs rather than free-form text, enabling downstream reasoning to operate on consistent schemas. Crucially, these interpreters integrate directly into the communication hub: parsed content is added to working memory, making it accessible to all collaborating agents.
+
+The combination of carefully chosen search, code, and multimodal tools results in 30–60\% gains on \texttt{Plan–Execute} baselines, establishing a robust substrate upon which more advanced ensemble and reinforcement strategies can be layered.

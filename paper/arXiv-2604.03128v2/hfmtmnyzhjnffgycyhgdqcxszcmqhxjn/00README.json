@@ -1,0 +1,86 @@
+{
+   "stamp" : true,
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "paper.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "cite.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "cite.bst"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "custom.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "neurips_2026.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "fancyhdr.sty"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "sections/related_work.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figs/distribution_comparison.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figs/episodic_distribution.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figs/evolagent.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figures/CaseStudy.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figures/RLSD-method.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figures/opsd_pilot.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figures/sigma-intro.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figures/training_dynamics.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "jingdong/ByteSans-Bold.ttf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "jingdong/ByteSans-Medium.ttf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "jingdong/bytesans.tfm"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "jingdong/bytesansmedium.tfm"
+      }
+   ],
+   "spec_version" : 1,
+   "texlive_version" : "2025",
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}

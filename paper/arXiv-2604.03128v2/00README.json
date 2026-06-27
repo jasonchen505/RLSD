@@ -1,0 +1,238 @@
+{
+   "stamp" : true,
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "paper.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "cite.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "cite.bst"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "common.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "conclusion.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "custom.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "eval.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "fancyhdr.sty"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figs/distribution_comparison.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figs/episodic_distribution.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figs/evolagent.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figs/levels_heatmap.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figs/overview.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/00README.json"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/abstract.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/acknowledge.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/appendix.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/cite.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/cite.bst"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/common.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/conclusion.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/custom.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/eval.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/fancyhdr.sty"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figs/distribution_comparison.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figs/episodic_distribution.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figs/evolagent.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figs/levels_heatmap.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figs/overview.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figures/CaseStudy.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figures/RLSD-method.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figures/opsd_pilot.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figures/sigma-intro.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/figures/training_dynamics.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/intro.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/jingdong.cls"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/jingdong/JINGDONGLangZhengTi2-Bold.tfm"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/jingdong/JINGDONGLangZhengTi2-Bold.ttf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/jingdong/JINGDONGLangZhengTi2-Regular.tfm"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/jingdong/JINGDONGLangZhengTi2-Regular.ttf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/jingdong/JINGDONGLangZhengTi2.enc"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/method.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/neurips_2026.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/paper.bbl"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/paper.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/related.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "hfmtmnyzhjnffgycyhgdqcxszcmqhxjn/sections/related_work.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "intro.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "jingdong/JINGDONGLangZhengTi2-Bold.tfm"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "jingdong/JINGDONGLangZhengTi2-Bold.ttf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "jingdong/JINGDONGLangZhengTi2-Regular.tfm"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "jingdong/JINGDONGLangZhengTi2-Regular.ttf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "jingdong/JINGDONGLangZhengTi2.enc"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "method.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "neurips_2026.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "paper.bbl"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "related.tex"
+      }
+   ],
+   "spec_version" : 1,
+   "texlive_version" : "2025",
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}
